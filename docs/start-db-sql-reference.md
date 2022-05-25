@@ -17,9 +17,71 @@ CREATE SCHEMA [ IF NOT EXISTS ] database_name
 
 ## CREATE TABLE
 
+**Syntax**
+
+```sql
+CREATE TABLE [ IF NOT EXISTS ] tbl_name
+```
+
+**Parameters**
+
+- tbl_name
+
+  - The table name of the table to be created.
+  - Table name can be specified as `db_name.tbl_name` to create the table in a specific database.
+
+- IF NOT EXISTS
+  - Prevent error occur if table with `tbl_name` already exist and skip create process.
+
 ### CREATE TABLE WITH COLUMNS
 
-### CREATE TABLE WITH SELECT(WIP)
+```sql
+CREATE TABLE [ IF NOT EXISTS ] tbl_name
+  (create_definition)
+  [table_options]
+
+create_definition: {
+  col_name column_definition
+}
+
+column_definition: {
+  data_type
+  [PRIMARY KEY]
+}
+
+table_option: {
+  STORAGE_EIGINE [=] engine_name
+}
+
+```
+
+- create_definition
+
+  - Specifies columns of a table.
+  - Each column has a column name and type definition. See [Data Types]
+  - Onle one column can be marked as Primary KEY
+
+- table_option
+  - Specify table storage engine. `hbase` is the only and default value for now.
+
+### CREATE TABLE WITH SELECT
+
+**Syntax**
+
+```sql
+CREATE TABLE [ IF NOT EXISTS ] tbl_name
+  [table_options]
+  AS query_expression
+
+query_expression:
+  SELECT ... ( a valid select statement)
+
+```
+
+**Parameters**
+
+- query_expression
+  - A SELECT statement that construct the table from base tables.
 
 ## CREATE VIEW
 
@@ -39,6 +101,23 @@ CREATE VIEW [ IF NOT EXISTS ] view_identifier AS query
   - A SELECT statement that constructs the view from base tables or other views.
 
 ## DESCRIBE TABLE
+
+Obtaing table structure information.
+
+**Syntax**
+
+```sql
+DESCRIBE TABLE [ IF EXISTS ] tbl_name
+```
+
+**Parameters**
+
+- IF EXISTS
+
+  - Prevent error occur if table not exist.
+
+- tbl_name
+  - Specify name of the table. Table name can be specified as `db_name.tbl_name` to describe the table in a specific database.
 
 ## DROP DATABASE
 
@@ -113,11 +192,58 @@ USE database_name
 
 ## SHOW DATABASES
 
+Lists the databases on the start-db server.
+
+**Syntax**
+
+```sql
+SHOW DATABASES;
+```
+
 ## SHOW TABLES
+
+Lists tables in current dabase or a given database.
+
+**Syntax**
+
+```sql
+SHOW TABLES [IN db_name]
+```
+
+**Parameters**
+
+- db_name
+  - It will show all tables under current databse. By specify `db_name` it will show all tables under the dabase.
 
 ## SHOW VIEWS
 
+List views in current database or a given database
+
+**Syntax**
+
+```sql
+SHOW FULL TABLES [IN db_name] WHERE table_type = 'VIEW';
+```
+
+**Parameters**
+
+- db_name
+  - By specify `db_name` it will return views under the dabase.
+
 ## SHOW CREATE TABLE
+
+Shows the [CREATE TABLE](#create-table) statement that creates the named table.
+
+**Syntax**
+
+```sql
+SHOW CREATE TABLE tbl_name
+```
+
+**Parameters**
+
+- tbl_name
+  - Specify name of the table. Table name can be specified as `db_name.tbl_name`.
 
 # DML
 
@@ -169,3 +295,5 @@ INSERT INTO [ TABLE ] table_identifier [ ( column_list ) ]
 ## GRANT(WIP)
 
 ## REVOKE(WIP)
+
+[Data Types](#)

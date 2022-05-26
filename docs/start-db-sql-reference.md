@@ -5,12 +5,12 @@
 **Syntax**
 
 ```sql
-CREATE SCHEMA [ IF NOT EXISTS ] database_name
+CREATE SCHEMA [ IF NOT EXISTS ] db_name
 ```
 
 **Parameters**
 
-- database_name
+- db_name
   - Specifies the name of the database to be created.
 - IF NOT EXISTS
   - Creates a database with the given name if it does not exist. If a database with the same name already exists, nothing will happen.
@@ -20,23 +20,23 @@ CREATE SCHEMA [ IF NOT EXISTS ] database_name
 **Syntax**
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] tbl_name
+CREATE TABLE [ IF NOT EXISTS ] table_identifier
 ```
 
 **Parameters**
 
-- tbl_name
+- table_identifier
 
   - The table name of the table to be created.
   - Table name can be specified as `db_name.tbl_name` to create the table in a specific database.
 
 - IF NOT EXISTS
-  - Prevent error occur if table with `tbl_name` already exist and skip create process.
+  - Prevent error occur if table with `table_identifier` already exist and skip create process.
 
 ### CREATE TABLE WITH COLUMNS
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] tbl_name
+CREATE TABLE [ IF NOT EXISTS ] table_identifier
   (create_definition)
   [table_options]
 
@@ -69,7 +69,7 @@ table_option: {
 **Syntax**
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] tbl_name
+CREATE TABLE [ IF NOT EXISTS ] table_identifier
   [table_options]
   AS query_expression
 
@@ -107,7 +107,7 @@ Obtaing table structure information.
 **Syntax**
 
 ```sql
-DESCRIBE TABLE [ IF EXISTS ] tbl_name
+DESCRIBE TABLE [ IF EXISTS ] table_identifier
 ```
 
 **Parameters**
@@ -116,7 +116,7 @@ DESCRIBE TABLE [ IF EXISTS ] tbl_name
 
   - Prevent error occur if table not exist.
 
-- tbl_name
+- table_identifier
   - Specify name of the table. Table name can be specified as `db_name.tbl_name` to describe the table in a specific database.
 
 ## DROP DATABASE
@@ -124,14 +124,14 @@ DESCRIBE TABLE [ IF EXISTS ] tbl_name
 **Syntax**
 
 ```sql
-DROP DATABASE [ IF EXISTS ] dbname
+DROP DATABASE [ IF EXISTS ] db_name
 ```
 
 **Parameters**
 
 - IF EXISTS
   - If specified, no exception is thrown when the database does not exist.
-- dbname
+- db_name
   - Specifies a database name
 
 ## DROP TABLE
@@ -182,12 +182,12 @@ TRUNCATE TABLE table_identifier
 **Syntax**
 
 ```sql
-USE database_name
+USE db_name
 ```
 
 **Parameters**
 
-- database_name
+- db_name
   - Name of the database will be used. If the database does not exist, an exception will be thrown.
 
 ## SHOW DATABASES
@@ -237,12 +237,12 @@ Shows the [CREATE TABLE](#create-table) statement that creates the named table.
 **Syntax**
 
 ```sql
-SHOW CREATE TABLE tbl_name
+SHOW CREATE TABLE table_identifier
 ```
 
 **Parameters**
 
-- tbl_name
+- table_identifier
   - Specify name of the table. Table name can be specified as `db_name.tbl_name`.
 
 # DML
@@ -272,11 +272,97 @@ INSERT INTO [ TABLE ] table_identifier [ ( column_list ) ]
 
 ## UPDATE
 
+Modifies rows in a table.
+
+**Syntax**
+
+```
+UPATE table_identifier
+  SET assignment_list
+  WHERE where_condition
+
+table_identifier: {
+  tbl_name
+}
+
+assignment_list:
+  assignment [, assignment] ...
+
+assignment:
+  col_name = value
+```
+
+**Parameters**
+
+- table_identifier
+
+  - Specify name of the table. Table can be specified as `db_name.tbl_name`.
+
+- assignment_list
+
+  - Assignment list set values for each column to be modifed.
+  - Column can be accessed in an assignment expression. For example `UPDATE t1 SET col1 = col1+1`.
+  - Assignments are evaluated from left to right.
+
+- where_condition
+  - where_condition is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
+
 ## DELETE
 
-## LOAD(WIP)
+Remove rows from a table.
+
+**Syntax**
+
+```
+DELETE from table_identifier
+  WHERE where_condition
+```
+
+**Parameters**
+
+- table_identifier
+
+  - Specify name of the table. Table can be specified as `db_name.tbl_name`.
+
+- where_condition
+  - where_condition is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
+
+## LOAD (WIP)
+
+Read rows from a text files into a table at a very high speed.
+
+**Syntax**
+
+```
+LOAD DATA
+  INFILE 'file_name'
+  [REPLACE | IGNORE]
+  INTO TABLE table_identifier
+  [FIELDS
+    [TERMINATED BY 'string']
+    [[ESCAPED BY 'char']]
+  ]
+  [LINES
+    [STARTING BY 'string']
+    [TERMINATED BY 'string']
+  ]
+  [IGNORE number {LINES}]
+```
+
+- 'file_name'
+  - Specify local file path which contains data to be loaded into table
+- REPLACE | IGNORE
+  - For handle duplicate key error. With `REPLACE`, new rows wil replace rows with same key value, while IGNORE will discard them.
+- FIELDS and LINES
+  - Used for handle fields and lines in file
+  - Field terminated by '\t', escapsed by '\\' by default
+  - Line start by '' and terminated by '\n' by default
+- IGNORE number LINES
+  - Used to ignore lines at the start of th file, for example you can use 'IGNORE 1' to skip header containing column names. Default value is `0`.
 
 # DQL
+
+## SELECT Statement
 
 ## COMMON EXPRESSION
 

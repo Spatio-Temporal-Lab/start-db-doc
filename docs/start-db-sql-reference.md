@@ -349,6 +349,8 @@ LOAD DATA
   [IGNORE number {LINES}]
 ```
 
+**Parameters**
+
 - 'file_name'
   - Specify local file path which contains data to be loaded into table
 - REPLACE | IGNORE
@@ -364,17 +366,104 @@ LOAD DATA
 
 ## SELECT Statement
 
+Retrieve rows selected from one or more tables.
+
+**Syntax**
+
+```
+SELECT
+  select_expr [, select_expr] ...
+  [FROM table_identifier]
+  [WHERE where_condition]
+  [GROUP BY {col_name | expr | position} [ASC|DESC]]
+  [HAVING where_condition]
+  [ORDER BY {col_name|expr|position} [ASC|DESC], ...]
+  [LIMIT {[offset,] row_count}]
+```
+
+**Parameters**
+
+- select_expr
+
+  - Each select_expr indicates a column that you want to retrieve.
+  - There must be at least one select_expr.
+
+- table_identifier
+
+  - Specify name of the table.
+
+- where_condition
+
+  - If given, indicate the condition or conditions that rows must satisfy to be selected. See [WHERE CLAUSE](#where-clause)
+
+- GROUP BY
+
+  - Used for grouping selected results. See [GROUP BY CLAUSE](#group-by-clause)
+
+- HAVING
+
+  - HAVING clause specifies conditions on groups. See [HAVING CLAUSE](#having-clause)
+
+- ORDER BY
+
+  - Specify rows order in result
+
+- LIMIT
+  - Used to constrain the number of rows returned.
+  - With one argument, the value specifies the number of rows to return from the begining. With two argument, the first tells the offset and the second specify the max number of rows to return.
+
 ## COMMON EXPRESSION
 
 ## GROUP BY CLAUSE
 
+Used for grouping results returned for select statement.
+
+**Syntax**
+
+```
+SELECT
+  [GROUP BY {col_name | expr | position} [ASC|DESC]]
+```
+
+Columns selected for output can be referred to in
+
 ## HAVING CLAUSE
+
+Specifies conditions on groups formed by the GROUP BY clause. The query results includes only groups satisfying the HAVING conditions. (If no GROUP BY is present, all rows implicitly form a single aggregate group.)
+
+**Syntax**
+
+```sql
+HAVING where_condition
+```
+
+**Parameters**
+
+- where_condition
+  - See [WHERE CLAUSE](#where-clause)
 
 ## JOIN
 
 ## ORDER BY CLAUSE
 
+ORDER BY specify order for select results.
+
+**Syntax**
+
+```sql
+ORDER BY {col_name | expr | position}
+      [ASC | DESC], ...
+```
+
 ## WHERE CLAUSE
+
+Indicates the condition or conditions that rows must satisfy to be selected. `where_condition` is an expresssion that evaluate to true for each row to be selected. The select statement selects all rows if there is not WHERE clause.
+
+**Syntax**
+
+```sql
+WHERE where_condition
+```
 
 # DCL
 

@@ -419,10 +419,4 @@ Indicates the condition or conditions that rows must satisfy to be selected. `wh
 WHERE where_condition
 ```
 
-# DCL
-
-## GRANT(WIP)
-
-## REVOKE(WIP)
-
 [Data Types](#)

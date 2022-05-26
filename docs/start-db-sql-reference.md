@@ -83,23 +83,6 @@ query_expression:
 - query_expression
   - A SELECT statement that construct the table from base tables.
 
-## CREATE VIEW
-
-**Syntax**
-
-```sql
-CREATE VIEW [ IF NOT EXISTS ] view_identifier AS query
-```
-
-**Parameters**
-
-- IF NOT EXISTS
-  - Creates a view if it does not exist.
-- view_identifier
-  - Specifies a view name, which may be optionally qualified with a database name.
-- query
-  - A SELECT statement that constructs the view from base tables or other views.
-
 ## DESCRIBE TABLE
 
 Obtaing table structure information.
@@ -148,21 +131,6 @@ DROP TABLE [ IF EXISTS ] table_identifier
   - If specified, no exception is thrown when the table does not exist.
 - table_identifier
   - Specifies the table name to be dropped. The table name may be optionally qualified with a database name.
-
-## DROP VIEW
-
-**Syntax**
-
-```sql
-DROP VIEW [ IF EXISTS ] view_identifier
-```
-
-**Parameters**
-
-- IF EXISTS
-  - If specified, no exception is thrown when the view does not exist.
-- view_identifier
-  - Specifies the view name to be dropped. The view name may be optionally qualified with a database name.
 
 ## TRUNCATE TABLE
 
@@ -215,21 +183,6 @@ SHOW TABLES [IN db_name]
 - db_name
   - It will show all tables under current databse. By specify `db_name` it will show all tables under the dabase.
 
-## SHOW VIEWS
-
-List views in current database or a given database
-
-**Syntax**
-
-```sql
-SHOW FULL TABLES [IN db_name] WHERE table_type = 'VIEW';
-```
-
-**Parameters**
-
-- db_name
-  - By specify `db_name` it will return views under the dabase.
-
 ## SHOW CREATE TABLE
 
 Shows the [CREATE TABLE](#create-table) statement that creates the named table.
@@ -261,9 +214,10 @@ INSERT INTO [ TABLE ] table_identifier [ ( column_list ) ]
 - table_identifier
   - Specifies a table name, which may be optionally qualified with a database name.
 - column_list
-  - An optional parameter that specifies a comma-separated list of columns belonging to the table_identifier table. Spark will reorder the columns of the input query to match the table schema according to the specified column list.
+  - An optional parameter that specifies a comma-separated list of columns belonging to the table_identifier table.
 - VALUES ( { value | NULL } [ , … ] ) [ , ( … ) ]
-  - Specifies the values to be inserted. Either an explicitly specified value or a NULL can be inserted. A comma must be used to separate each value in the clause. More than one set of values can be specified to insert multiple rows.
+  - Specifies the values to be inserted. Either an explicitly specified value or a NULL can be inserted. A comma must be used to separate each value in the clause.
+  - More than one set of values can be specified to insert multiple rows.
 - query
   - A query that produces the rows to be inserted. It can be in one of following formats:
     - a SELECT statement

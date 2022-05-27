@@ -59,7 +59,7 @@ table_option: {
 
   - Specifies columns of a table.
   - Each column has a column name and type definition. See [Data Types]
-  - Onle one column can be marked as Primary KEY
+  - Onle one column can be marked as PRIMARY KEY
 
 - table_option
   - Specify table storage engine. `hbase` is the only and default value for now.
@@ -233,7 +233,7 @@ Modifies rows in a table.
 ```
 UPATE table_identifier
   SET assignment_list
-  WHERE where_condition
+  WHERE booleanExpression
 
 table_identifier: {
   tbl_name
@@ -258,8 +258,8 @@ assignment:
   - Column can be accessed in an assignment expression. For example `UPDATE t1 SET col1 = col1+1`.
   - Assignments are evaluated from left to right.
 
-- where_condition
-  - where_condition is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
+- booleanExpression
+  - booleanExpression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
 
 ## DELETE
 
@@ -269,7 +269,7 @@ Remove rows from a table.
 
 ```
 DELETE from table_identifier
-  WHERE where_condition
+  WHERE booleanExpression
 ```
 
 **Parameters**
@@ -278,8 +278,8 @@ DELETE from table_identifier
 
   - Specify name of the table. Table can be specified as `db_name.tbl_name`.
 
-- where_condition
-  - where_condition is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
+- booleanExpression
+  - booleanExpression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [EXPRESSIONS](#expressions)
 
 ## LOAD (WIP)
 
@@ -327,11 +327,10 @@ Retrieve rows selected from one or more tables.
 ```
 SELECT
   select_expr [, select_expr] ...
-  [FROM table_identifier]
-  [WHERE where_condition]
-  [GROUP BY {col_name | expr | position} [ASC|DESC]]
-  [HAVING where_condition]
-  [ORDER BY {col_name|expr|position} [ASC|DESC], ...]
+  [FROM table_reference]
+  [WHERE booleanExpression]
+  [GROUP BY col_name [ASC|DESC]]
+  [ORDER BY col_name [ASC|DESC], ...]
   [LIMIT {[offset,] row_count}]
 ```
 
@@ -342,21 +341,17 @@ SELECT
   - Each select_expr indicates a column that you want to retrieve.
   - There must be at least one select_expr.
 
-- table_identifier
+- table_reference
 
-  - Specify name of the table.
+  - It can be a table_identifer or a joined table. See [JOIN CLAUSE](#join-clause)
 
-- where_condition
+- WHERE booleanExpression
 
   - If given, indicate the condition or conditions that rows must satisfy to be selected. See [WHERE CLAUSE](#where-clause)
 
 - GROUP BY
 
   - Used for grouping selected results. See [GROUP BY CLAUSE](#group-by-clause)
-
-- HAVING
-
-  - HAVING clause specifies conditions on groups. See [HAVING CLAUSE](#having-clause)
 
 - ORDER BY
 
@@ -366,7 +361,9 @@ SELECT
   - Used to constrain the number of rows returned.
   - With one argument, the value specifies the number of rows to return from the begining. With two argument, the first tells the offset and the second specify the max number of rows to return.
 
-## COMMON EXPRESSION
+## EXPRESSIONS
+
+This section lists the grammar rules that expressions must follow in START-DB.
 
 ## GROUP BY CLAUSE
 
@@ -375,28 +372,25 @@ Used for grouping results returned for select statement.
 **Syntax**
 
 ```
-SELECT
-  [GROUP BY {col_name | expr | position} [ASC|DESC]]
+GROUP BY {col_name | expr | position} [ASC|DESC]
 ```
 
-Columns selected for output can be referred to in
+## JOIN CLAUSE
 
-## HAVING CLAUSE
-
-Specifies conditions on groups formed by the GROUP BY clause. The query results includes only groups satisfying the HAVING conditions. (If no GROUP BY is present, all rows implicitly form a single aggregate group.)
+START-DB supports JOIN syntax for the `table_reference` of _SELECT_ statements.
 
 **Syntax**
 
 ```sql
-HAVING where_condition
+table_reference:
+  table_identifier [, table_identifier]*
+  | table_reference [ NATURAL ] [ { LEFT | RIGHT | FULL } [ OUTER ] ] JOIN table_reference [ joinCondition ]
+  | table_reference CROSS JOIN table_reference
+
+
+joinCondition:
+  ON booleanExpression
 ```
-
-**Parameters**
-
-- where_condition
-  - See [WHERE CLAUSE](#where-clause)
-
-## JOIN
 
 ## ORDER BY CLAUSE
 
@@ -405,18 +399,21 @@ ORDER BY specify order for select results.
 **Syntax**
 
 ```sql
-ORDER BY {col_name | expr | position}
+ORDER BY {col_name | expr }
       [ASC | DESC], ...
 ```
 
 ## WHERE CLAUSE
 
-Indicates the condition or conditions that rows must satisfy to be selected. `where_condition` is an expresssion that evaluate to true for each row to be selected. The select statement selects all rows if there is not WHERE clause.
+Indicates the condition or conditions that rows must satisfy to be selected. `booleanExpression` is an [EXPRESSION](#expressions) that evaluate to true for each row to be selected. The select statement selects all rows if there is not WHERE clause.
 
 **Syntax**
 
 ```sql
-WHERE where_condition
+WHERE booleanExpression
 ```
 
-[Data Types](#)
+In the where expression, you can use [functions and operators] that START-DB supports.
+
+[data types]: #todo-link-to-data-types
+[functions and operators]: #todo-link-to-functions

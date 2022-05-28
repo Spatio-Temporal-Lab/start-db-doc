@@ -5,7 +5,7 @@
 **Syntax**
 
 ```sql
-CREATE SCHEMA [ IF NOT EXISTS ] db_name
+CREATE DATABASE [ IF NOT EXISTS ] db_name
 ```
 
 **Parameters**

@@ -233,7 +233,7 @@ Modifies rows in a table.
 ```
 UPATE table_identifier
   SET assignment_list
-  WHERE booleanExpression
+  WHERE boolean_expression
 
 table_identifier: {
   tbl_name
@@ -258,8 +258,8 @@ assignment:
   - Column can be accessed in an assignment expression. For example `UPDATE t1 SET col1 = col1+1`.
   - Assignments are evaluated from left to right.
 
-- booleanExpression
-  - booleanExpression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
+- boolean_expression
+  - boolean_expression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [WHERE CLAUSE](#where-clause)
 
 ## DELETE
 
@@ -269,7 +269,7 @@ Remove rows from a table.
 
 ```
 DELETE from table_identifier
-  WHERE booleanExpression
+  WHERE boolean_expression
 ```
 
 **Parameters**
@@ -278,8 +278,8 @@ DELETE from table_identifier
 
   - Specify name of the table. Table can be specified as `db_name.tbl_name`.
 
-- booleanExpression
-  - booleanExpression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [EXPRESSIONS](#expressions)
+- boolean_expression
+  - boolean_expression is an expression that evaluates to ture for each row to be updated. For detail syntax, see [EXPRESSIONS](#expressions)
 
 ## LOAD (WIP)
 
@@ -320,32 +320,39 @@ LOAD DATA
 
 ## SELECT Statement
 
-Retrieve rows selected from one or more tables.
+Select statement is used for retrieve rows selected from one or more tables.
+
+In START-DB, you can also use SELECT statement without FROM to generate a result set projecting the columns and values that you've specified.
 
 **Syntax**
 
 ```
 SELECT
-  select_expr [, select_expr] ...
+  project_item [, project_item] ...
   [FROM table_reference]
-  [WHERE booleanExpression]
+  [WHERE boolean_expression]
   [GROUP BY col_name [ASC|DESC]]
-  [ORDER BY col_name [ASC|DESC], ...]
   [LIMIT {[offset,] row_count}]
+
+project_item {
+  expression [[AS] columnAlias] |
+  tableAlias
+}
 ```
 
 **Parameters**
 
-- select_expr
+- project_item
 
-  - Each select_expr indicates a column that you want to retrieve.
-  - There must be at least one select_expr.
+  - Each project_item indicates a column that you want to retrieve.
+  - A project_item can come from a column or produced from an expression.
+  - There must be at least one project_item.
 
 - table_reference
 
   - It can be a table_identifer or a joined table. See [JOIN CLAUSE](#join-clause)
 
-- WHERE booleanExpression
+- WHERE boolean_expression
 
   - If given, indicate the condition or conditions that rows must satisfy to be selected. See [WHERE CLAUSE](#where-clause)
 
@@ -389,7 +396,7 @@ table_reference:
 
 
 joinCondition:
-  ON booleanExpression
+  ON boolean_expression
 ```
 
 ## ORDER BY CLAUSE
@@ -405,12 +412,12 @@ ORDER BY {col_name | expr }
 
 ## WHERE CLAUSE
 
-Indicates the condition or conditions that rows must satisfy to be selected. `booleanExpression` is an [EXPRESSION](#expressions) that evaluate to true for each row to be selected. The select statement selects all rows if there is not WHERE clause.
+Indicates the condition or conditions that rows must satisfy to be selected. `boolean_expression` is an [EXPRESSION](#expressions) that evaluate to true for each row to be selected. The select statement selects all rows if there is not WHERE clause.
 
 **Syntax**
 
 ```sql
-WHERE booleanExpression
+WHERE boolean_expression
 ```
 
 In the where expression, you can use [functions and operators] that START-DB supports.

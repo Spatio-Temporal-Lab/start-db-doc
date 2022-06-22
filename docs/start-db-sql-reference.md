@@ -17,28 +17,27 @@ CREATE DATABASE [ IF NOT EXISTS ] db_name
 
 ## CREATE TABLE
 
+There are three different manners for creating a new table
+
+- Create a brand new table by defining column information.
+- Reuse data from existing table with select query.
+- Reuse metadata from an existing table with **LIKE**.
+
 **Syntax**
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] table_identifier
+create:
+  createTableWithColumns
+  createTableWithSelect
+  createTableWithLike
 ```
-
-**Parameters**
-
-- table_identifier
-
-  - The table name of the table to be created.
-  - Table name can be specified as `db_name.tbl_name` to create the table in a specific database.
-
-- IF NOT EXISTS
-  - Prevent error occur if table with `table_identifier` already exist and skip create process.
 
 ### CREATE TABLE WITH COLUMNS
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] table_identifier
+CREATE [ OR REPLACE ] TABLE [ IF NOT EXISTS ] table_identifier
   (create_definition)
-  [table_options]
+  [WITH (with_options)]
 
 create_definition: {
   col_name column_definition
@@ -49,11 +48,19 @@ column_definition: {
   [PRIMARY KEY]
 }
 
-table_option: {
-  STORAGE_EIGINE [=] engine_name
+with_options:
+    with_option [[,] with_option] ...
+
+with_option: {
+  STORAGE [=] storage_name
 }
 
 ```
+
+- table_identifier
+
+  - Specify qulified name of the table.
+  - Table name can be specified as `user_name.db_name.tbl_name` to describe the table in a specific database of a certain user.
 
 - create_definition
 
@@ -61,20 +68,24 @@ table_option: {
   - Each column has a column name and type definition. See [Data Types]
   - Onle one column can be marked as PRIMARY KEY
 
-- table_option
-  - Specify table storage engine. `hbase` is the only and default value for now.
+- with_options
+  - Specify table metadata.
+  - STORAGE specifiy how data stored. `hbase` is the only and default value for now.
 
 ### CREATE TABLE WITH SELECT
 
 **Syntax**
 
 ```sql
-CREATE TABLE [ IF NOT EXISTS ] table_identifier
-  [table_options]
+CREATE [ OR REPLACE ]  TABLE [ IF NOT EXISTS ] table_identifier
   AS query_expression
+  [WITH (with_options)]
 
 query_expression:
   SELECT ... ( a valid select statement)
+
+with_options:
+    with_option [[,] with_option] ...
 
 ```
 
@@ -82,6 +93,25 @@ query_expression:
 
 - query_expression
   - A SELECT statement that construct the table from base tables.
+
+### CREATE TABLE WITH LIKE
+
+Use _CREATE TABLE ... LIKE_ to create an empty table based on the definition of another table, including column information.
+
+**Syntax**
+
+```sql
+CREATE [ OR REPLACE ] TABLE [ IF NOT EXISTS ]
+  DESTINATION=table_identifier
+  LIKE ORIGINATION=table_identifier
+```
+
+**Parameters**
+
+- DESTINATION
+  - Specify the target qualified table name.
+- ORIGINATION
+  - Specify the original qualified table name.
 
 ## DESCRIBE TABLE
 

@@ -18,7 +18,7 @@ Operations may differ on different distributions.
 
    `sudo apt update && sudo apt upgrade`
 
-2. Download **OracleJDK 1.8 (JAVA 8) ** and install it.
+2. Download **OracleJDK 1.8 (JAVA 8)** and install it.
 
    > Here is the official link: [OracleJDK](https://www.oracle.com/java/technologies/downloads/#java8-linux)
 

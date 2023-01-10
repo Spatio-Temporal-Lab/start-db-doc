@@ -180,5 +180,6 @@ Operations may differ on different distributions.
 ## TIPS
 
 1. It is recommended to drop all containers and restart them before every test.
-2. If there is any network problem during synchronization of maven repositories or docker images, please delete the cache and retry.
-3. Administrator privilege is needed for editing the hosts file.
+2. Please disable your network proxy tool before packaging.
+3. If there is any network problem during synchronization of maven repositories or docker images, please delete the cache and retry.
+4. Administrator privilege is needed for editing the hosts file.

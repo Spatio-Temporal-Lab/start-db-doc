@@ -182,4 +182,4 @@ Operations may differ on different distributions.
 1. It is recommended to drop all containers and restart them before every test.
 2. If there is any network problem during synchronization of maven repositories or docker images, please delete the cache and retry.
 3. Administrator privilege is needed for editing the hosts file.
-4. If an error raised by module 'start-db-server' occurred, please try disabling your network proxy tool.
+4. If an error raised by module 'start-db-server' occurred, please try to disable your network proxy tool.

@@ -1,0 +1,94 @@
+#DDL
+
+##CREATE TABLE
+
+###CREATE TABLE WITH COLUMNS
+-Define a new table with custom columns and constraints.
+
+###CREATE TABLE WITH SELECT
+-Create a new table populated with data from a SELECT query.
+
+``Example
+CREATE TABLE [IF NOT EXISTS] table_name AS
+SELECT column1, column2, ...
+FROM source_table
+WHERE condition;
+
+###CREATE TABLE WITH LIKE
+-Duplicate the structure of an existing table to create a new, empty table.
+
+``Example
+CREATE TABLE [IF NOT EXISTS] new_table LIKE existing_table;
+
+###CREATE STREAM TABLE
+-Create a new stream table(with custom columns and constraints).
+
+``Example
+CREATE STREAM TABLE [IF NOT EXISTS] table_name (
+    column_name1 data_type1,
+    column_name2 data_type2,
+    ...
+    [PRIMARY KEY (column_name)]
+);
+
+#DML
+
+##INSERT INTO
+
+###INSERT INTO table_name1 SELECT * FROM table_name2;
+-Insert data from query results (supports inserting streaming data into streaming tables).
+
+``Example
+INSERT INTO table_name (column1, column2, ...)
+SELECT column1, column2, ...
+FROM source_table
+WHERE condition;
+
+#DQL
+
+##SELECT
+
+###SELECT FROM STREAM TABLE;
+-Query data that meets the conditions from the streaming table.
+
+``Example
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+##JOIN
+
+###SELECT FROM INNER JOIN ON;
+-Supports joining two or more streaming tables.
+
+``Example1
+SELECT t1.column1, t2.column2, ...
+FROM table1 t1
+INNER JOIN table2 t2
+ON condition;
+
+``Example2
+SELECT t1.column1, t2.column2, t3.column3, ...
+FROM table1 t1
+LEFT JOIN table2 t2 ON condition1
+RIGHT JOIN table3 t3 ON condition2;
+
+##UNION
+
+###SELECT FORM table_name1 UNION SELECT FORM table_name2;
+-Supports union operations between streaming tables or between points and trajectories.
+
+``Example
+SELECT column1, column2, ...
+FROM table1
+UNION
+SELECT column1, column2, ...
+FROM table2;
+
+#Extended Features
+
+##PARSE
+-Supports parsing complex SQL statements, including multi-table joins, nested queries, and more.
+
+##WRITE QUERY RESULT
+-Supports writing query results to a specified storage or output.
